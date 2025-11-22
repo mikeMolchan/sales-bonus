@@ -90,13 +90,13 @@ function calculateBonusByProfit(index, total, seller) {
     const sales = getSellerSales(data, seller.id);
     const profit = calculateSellerProfit(sales, data.products);
 
-    if (index === 0) {
+    if (index === 1) {
         return profit * 0.15;
     }
-    else if (index === 1 || index === 2) {
+    else if (index === 2 || index === 3) {
         return profit * 0.1;
     }
-    else if (total - index === 1) {
+    else if (total - index === 0) {
         return 0;
     }
     else {
