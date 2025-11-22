@@ -52,17 +52,17 @@ function getTopProducts(sales) {
                 topProducts.push(
                     {
                         sku: item.sku,
-                        count: item.quantity
+                        quantity: item.quantity
                     }
                 );
             }
             else {
-                topProducts.find(value => value.sku === item.sku).count += item.quantity;
+                topProducts.find(value => value.sku === item.sku).quantity += item.quantity;
             }
         }
     }
 
-    topProducts.sort((prev, next) => next.count - prev.count);
+    topProducts.sort((prev, next) => next.quantity - prev.quantity);
     return topProducts.slice(0, 10);
 }
 
