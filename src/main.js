@@ -124,12 +124,18 @@ function getSellersStats(data) {
 }
 
 function checkData(data, options) {
-    if ((!data || !options) || (data.length === 0 || Object.keys(options).length === 0)) {
+    if ((!data || !options) || (data.length === 0 || Object.keys(options).length !== 2)) {
         throw new Error("Некорректные данные!");
     }
     else {
         for (let item of Object.values(data)) {
             if (!item || (item.length === 0)) { 
+                throw new Error("Некорректные данные!");
+            }
+        }
+
+        for (let option of Object.values(options)) {
+            if (!option) { 
                 throw new Error("Некорректные данные!");
             }
         }
