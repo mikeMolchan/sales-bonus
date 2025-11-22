@@ -87,20 +87,18 @@ function getTopProducts(sales) {
 // }
 
 function calculateBonusByProfit(index, total, seller) {
-    const sales = getSellerSales(data, seller.id);
-    const profit = calculateSellerProfit(sales, data.products);
 
-    if (index === 1) {
-        return profit * 0.15;
+    if (index === 0) {
+        return seller.profit * 0.15;
     }
-    else if (index === 2 || index === 3) {
-        return profit * 0.1;
+    else if (index === 1 || index === 2) {
+        return seller.profit * 0.1;
     }
-    else if (total - index === 0) {
+    else if (total - index === 1) {
         return 0;
     }
     else {
-        return profit * 0.05
+        return seller.profit * 0.05
     }
 }
 
@@ -126,12 +124,10 @@ function getSellersStats(data) {
     sellersStats.sort((prev, next) => next.profit - prev.profit);
 
     for (let seller of sellersStats) {
-        // let profit = seller.profit;
         let bonus = calculateBonusByProfit(
             sellersStats.indexOf(seller),
             sellersStats.length,
-            data.sellers.find(value => value["seller_id"] === seller.id),
-            seller.profit
+            seller
         );
 
         seller.bonus = +bonus.toFixed(2);
@@ -151,6 +147,9 @@ function analyzeSalesData(data, options) {
         const sellersStats = getSellersStats(data);
 
         return sellersStats;
+    }
+    else {
+        throw DataError;
     }
     // @TODO: Проверка входных данных
 
