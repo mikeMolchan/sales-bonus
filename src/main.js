@@ -7,8 +7,6 @@
 function calculateSimpleRevenue(purchase, _product) {
     const discount =   1 - (purchase.discount / 100);
     return purchase["sale_price"] * purchase.quantity * discount;
-
-    // return purchase.quantity * ((purchase["sale_price"] - purchase["sale_price"] * (purchase["discount"] / 100)) - _product["purchase_price"]);
    // @TODO: Расчет выручки от операции
 }
 
@@ -46,7 +44,7 @@ function calculateSellerProfit(sales, products) {
 
 // Топ-10 товаров продавца
 function getTopProducts(sales) {
-    const topProducts = []
+    const topProducts = [];
 
     for (let sale of sales) {
         for (let item of sale.items) {
@@ -54,12 +52,12 @@ function getTopProducts(sales) {
                 topProducts.push(
                     {
                         sku: item.sku,
-                        count: 1
+                        count: item.quantity
                     }
                 );
             }
             else {
-                topProducts.find(value => value.sku === item.sku).count++;
+                topProducts.find(value => value.sku === item.sku).count += item.quantity;
             }
         }
     }
@@ -130,7 +128,7 @@ function checkData(data, options) {
         throw new Error("Некорректные данные!");
     }
     else {
-        for (let item of data) {
+        for (let item of Object.values(data)) {
             if (!item || (item.length === 0)) { 
                 throw new Error("Некорректные данные!");
             }
