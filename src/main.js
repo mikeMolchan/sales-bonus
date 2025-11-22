@@ -5,7 +5,7 @@
  * @returns {number}
  */
 function calculateSimpleRevenue(purchase, _product) {
-    const discount =   1 - (purchase.discount / 100);
+    const discount = 1 - (purchase.discount / 100);
     return purchase["sale_price"] * purchase.quantity * discount;
    // @TODO: Расчет выручки от операции
 }
@@ -21,7 +21,7 @@ function getSellerSales(data, sellerId) {
 function calculateSellerRevenue(sales) {
     let revenue = 0;
 
-    for (let sale of sales) {
+    for (const sale of sales) {
         revenue += sale["total_amount"];
     }
 
@@ -32,8 +32,8 @@ function calculateSellerRevenue(sales) {
 function calculateSellerProfit(sales, products) {
     let profit = 0;
 
-    for (let sale of sales) {
-        for (let item of sale.items) {
+    for (const sale of sales) {
+        for (const item of sale.items) {
             const product = products.find(product => product.sku === item.sku);
             profit += calculateSimpleRevenue(item, product) - product["purchase_price"] * item.quantity;
         }
@@ -46,9 +46,10 @@ function calculateSellerProfit(sales, products) {
 function getTopProducts(sales) {
     const topProducts = [];
 
-    for (let sale of sales) {
-        for (let item of sale.items) {
-            if (!topProducts.find(value => value.sku === item.sku)) {
+    for (const sale of sales) {
+        for (const item of sale.items) {
+            const product = topProducts.find(value => value.sku === item.sku);
+            if (!product) {
                 topProducts.push(
                     {
                         sku: item.sku,
@@ -57,7 +58,7 @@ function getTopProducts(sales) {
                 );
             }
             else {
-                topProducts.find(value => value.sku === item.sku).quantity += item.quantity;
+                product.quantity += item.quantity;
             }
         }
     }
@@ -85,14 +86,14 @@ function calculateBonusByProfit(index, total, seller) {
         return 0;
     }
     else {
-        return seller.profit * 0.05
+        return seller.profit * 0.05;
     }
 }
 
 function getSellersStats(data) {
     const sellersStats = [];
 
-    for (let seller of data.sellers) {
+    for (const seller of data.sellers) {
         const salesRecords = getSellerSales(data, seller.id);
 
         const sellerRecord = {
@@ -102,7 +103,7 @@ function getSellersStats(data) {
             profit: +calculateSellerProfit(salesRecords, data.products).toFixed(2),
             sales_count: salesRecords.length,
             top_products: getTopProducts(salesRecords),
-            bonus: undefined 
+            bonus: undefined
         };
 
         sellersStats.push(sellerRecord);
@@ -110,8 +111,8 @@ function getSellersStats(data) {
 
     sellersStats.sort((prev, next) => next.profit - prev.profit);
 
-    for (let seller of sellersStats) {
-        let bonus = calculateBonusByProfit(
+    for (const seller of sellersStats) {
+        const bonus = calculateBonusByProfit(
             sellersStats.indexOf(seller),
             sellersStats.length,
             seller
@@ -128,14 +129,14 @@ function checkData(data, options) {
         throw new Error("Некорректные данные!");
     }
     else {
-        for (let item of Object.values(data)) {
-            if (!item || (item.length === 0)) { 
+        for (const item of Object.values(data)) {
+            if (!item || (item.length === 0)) {
                 throw new Error("Некорректные данные!");
             }
         }
 
-        for (let option of Object.values(options)) {
-            if (!option) { 
+        for (const option of Object.values(options)) {
+            if (!option) {
                 throw new Error("Некорректные данные!");
             }
         }
