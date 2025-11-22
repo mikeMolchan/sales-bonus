@@ -5,7 +5,10 @@
  * @returns {number}
  */
 function calculateSimpleRevenue(purchase, _product) {
-    return purchase.quantity * ((purchase["sale_price"] - purchase["sale_price"] * (purchase["discount"] / 100)) - _product["purchase_price"]);
+    const discount =   1 - (purchase.discount / 100);
+    return purchase["sale_price"] * purchase.quantity * discount;
+
+    // return purchase.quantity * ((purchase["sale_price"] - purchase["sale_price"] * (purchase["discount"] / 100)) - _product["purchase_price"]);
    // @TODO: Расчет выручки от операции
 }
 
@@ -33,7 +36,8 @@ function calculateSellerProfit(sales, products) {
 
     for (let sale of sales) {
         for (let item of sale.items) {
-            profit += calculateSimpleRevenue(item, products.find(product => product.sku === item.sku));
+            const product = products.find(product => product.sku === item.sku);
+            profit += calculateSimpleRevenue(item, product) - product["purchase_price"] * item.quantity;
         }
     }
 
@@ -71,23 +75,8 @@ function getTopProducts(sales) {
  * @param seller карточка продавца
  * @returns {number}
  */
-// function calculateBonusByProfit(index, total, seller, profit) {
-//     if (index === 0) {
-//         return profit * 0.15;
-//     }
-//     else if (index === 1 || index === 2) {
-//         return profit * 0.1;
-//     }
-//     else if (total - index === 1) {
-//         return 0;
-//     }
-//     else {
-//         return profit * 0.05
-//     }
-// }
 
 function calculateBonusByProfit(index, total, seller) {
-
     if (index === 0) {
         return seller.profit * 0.15;
     }
