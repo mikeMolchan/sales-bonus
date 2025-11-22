@@ -71,7 +71,25 @@ function getTopProducts(sales) {
  * @param seller карточка продавца
  * @returns {number}
  */
-function calculateBonusByProfit(index, total, seller, profit) {
+// function calculateBonusByProfit(index, total, seller, profit) {
+//     if (index === 0) {
+//         return profit * 0.15;
+//     }
+//     else if (index === 1 || index === 2) {
+//         return profit * 0.1;
+//     }
+//     else if (total - index === 1) {
+//         return 0;
+//     }
+//     else {
+//         return profit * 0.05
+//     }
+// }
+
+function calculateBonusByProfit(index, total, seller) {
+    const sales = getSellerSales(data, seller.id);
+    const profit = calculateSellerProfit(sales, data.products);
+
     if (index === 0) {
         return profit * 0.15;
     }
