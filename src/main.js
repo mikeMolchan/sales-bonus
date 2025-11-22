@@ -133,6 +133,18 @@ function getSellersStats(data) {
  */
 function analyzeSalesData(data, options) {
     if (data && options) {
+        for (let item in data) {
+            if (!item) {
+                throw DataError;
+            }
+        }
+
+        for (let option in options) {
+            if (!option) {
+                throw DataError;
+            }
+        }
+
         const sellersStats = getSellersStats(data);
 
         return sellersStats;
