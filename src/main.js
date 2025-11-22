@@ -125,6 +125,19 @@ function getSellersStats(data) {
     return sellersStats;
 }
 
+function checkData(data, options) {
+    if ((!data || !options) || (data.length === 0 || options.length === 0)) {
+        throw new Error("Некорректные данные!");
+    }
+    else {
+        for (let item of data) {
+            if (!item || (item.length === 0)) { 
+                throw new Error("Некорректные данные!");
+            }
+        }
+    }
+}
+
 /**
  * Функция для анализа данных продаж
  * @param data
@@ -132,26 +145,11 @@ function getSellersStats(data) {
  * @returns {{revenue, top_products, bonus, name, sales_count, profit, seller_id}[]}
  */
 function analyzeSalesData(data, options) {
-    if (data && options) {
-        for (let item in data) {
-            if (!item) {
-                throw DataError;
-            }
-        }
+    checkData(data, options);
 
-        for (let option in options) {
-            if (!option) {
-                throw DataError;
-            }
-        }
+    const sellersStats = getSellersStats(data);
 
-        const sellersStats = getSellersStats(data);
-
-        return sellersStats;
-    }
-    else {
-        throw DataError;
-    }
+    return sellersStats;
     // @TODO: Проверка входных данных
 
     // @TODO: Проверка наличия опций
