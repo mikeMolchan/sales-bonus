@@ -133,6 +133,12 @@ function checkData(data, options) {
                 throw new Error("Некорректные данные!");
             }
         }
+
+        for (let option of Object.values(options)) {
+            if (!option) { 
+                throw new Error("Некорректные данные!");
+            }
+        }
     }
 }
 
